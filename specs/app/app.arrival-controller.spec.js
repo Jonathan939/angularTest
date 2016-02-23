@@ -7,7 +7,7 @@
 		// the Arrival Controller we plan to test
 		var testController;
 		// the root scope (needed to trigger promise)
-		var $rootScope;
+		var rootScope;
 		// the Data Service mock (defined now, completed later)
 		var dataServiceMock = {};
 		// the Configurartion Service (defined now, completed later)
@@ -19,9 +19,9 @@
     beforeEach(angular.mock.module('App'));
 
 		// inject Angular's Controller service, Promise (q) service, and its dependencies
-    beforeEach(angular.mock.inject(function GetDependencies($controller, $q, _$rootScope_) {
+    beforeEach(angular.mock.inject(function GetDependencies($controller, $q, $rootScope) {
 			// inject $rootScope so we can set off Promises
-			$rootScope = _$rootScope_.$new();
+			rootScope = $rootScope.$new();
 
 			// set up the working API return, now that Promises ($q) are available
 			dataServiceMock.getBusDataPromise = jasmine.createSpy('getBusDataPromise').and.callFake(function() {
@@ -79,7 +79,7 @@
 			expect(dataServiceMock.getBusDataPromise).toHaveBeenCalled();
 
 			// return the Data Service promise
-			$rootScope.$apply();
+			rootScope.$apply();
 
 			// once the promise has been returned, bus data should now be available
 			expect(testController.busData).toEqual(testData);
@@ -90,6 +90,7 @@
 			}
 			else {
 				fail("Test controller still loading after promise completion.");
+				done();
 			}
 
 		});
@@ -103,7 +104,7 @@
 			expect(dataServiceMock.getBusDataPromise.calls.count()).toEqual(1);
 
 			// set off the Data Service's Refresh promise from its inital load
-			$rootScope.$apply();
+			rootScope.$apply();
 
 			// loading should now be done
 			expect(testController.isLoading).toBe(false);
@@ -118,7 +119,7 @@
 			expect(testController.isLoading).toBe(true);
 
 			// set off the Data Service's Refresh promise
-			$rootScope.$apply();
+			rootScope.$apply();
 
 			// the controller should not be in its loading state
 			expect(testController.isLoading).toBe(false);

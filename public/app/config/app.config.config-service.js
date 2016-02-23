@@ -11,6 +11,8 @@
     function Configuration () {
 		  var self = this;
 
+			// MAKE PRIVATE
+
   		// Bindable Members (app parameters)
   		self.tmApiKey = 'D14BEDCD0ED1CAB4054C1C0B3'; // API key needed to access TriMet
   		self.busName = 'Burnside/Stark';

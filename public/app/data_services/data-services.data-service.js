@@ -69,7 +69,7 @@
 				// return the cleaned data to the promise
 				return processedArrivalsData;
 
-	    }, // end of success
+	    }, // end of success on then()
       function (error) {
         console.error('API Error: ' + error);
         return error;

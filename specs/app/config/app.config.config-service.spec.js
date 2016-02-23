@@ -1,5 +1,4 @@
 /* app.config.config-service.spec.js */
-
 (function () {
 	'use strict';
 
@@ -11,7 +10,7 @@
 		beforeEach(angular.mock.module('Config'));
 
 		// inject the Config service
-		beforeEach(angular.mock.inject(function(configService) {
+		beforeEach(angular.mock.inject(function (configService) {
 				testService = configService;
 		}));
 
@@ -43,5 +42,5 @@
 			expect(destination).toBe('Beaverton Transit Center');
 		});
 
-	});
+	}); // end of describe
 }) ();

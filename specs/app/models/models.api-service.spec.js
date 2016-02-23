@@ -1,5 +1,4 @@
 /* models.api-service.spec.js */
-
 (function() {
 	'use strict';
 
@@ -21,6 +20,8 @@
 
 		// provide the fake Config Service
     beforeEach(angular.mock.module(function ($provide) {
+			// overwrites existing 'configService' service object (in 'Config' moddule) with mocked version
+			// (will be instantiated in inject call below)
       $provide.value('configService', configServiceMock);
     }));
 
@@ -64,6 +65,7 @@
 			// failure callback
 	    var failCallback = function(error) {
 	      expect(error).toBeUndefined(); // (shouldn't happen...)
+				fail("Promise has errored out!"); // (shouldn't happen...)
 	    };
 
 			// set up a mock GET response to intercept the app's normal response

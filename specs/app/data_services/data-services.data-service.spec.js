@@ -5,37 +5,33 @@
 
   describe('Data Servicee', function() {
     // the module's service to test
-    var dataService;
+    var testService;
     // the root scope (needed to trigger promise)
-    var $rootScope;
+    var rootScope;
     // raw data holder
     var rawData = {};
     // cleaned data holder
     var cleanedData = [];
-    // the API Service mock (instantiated now, updated later)
+    // the API Service mock (declared now, updated later)
     var apiServiceMock = {};
-    // the Config Services mock (instantiated now, updated later)
+    // the Config Services mock (declared now, updated later)
     var configServiceMock = {};
 
     // grab the Data Service module
     beforeEach(angular.mock.module('DataServices'));
 
-    // provide the fake API Service to it
+    // provide the fake API Service and Config Service to it
     beforeEach(angular.mock.module(function ($provide) {
       $provide.value('apiService', apiServiceMock);
-    }));
-
-    // provide the fake Config Service to it
-    beforeEach(angular.mock.module(function ($provide) {
       $provide.value('configService', configServiceMock);
     }));
 
     // inject the service, Promise (q) service, and its dependencies
-    beforeEach(angular.mock.inject(function GetDependencies(_dataService_, $q, _$rootScope_) {
+    beforeEach(angular.mock.inject(function GetDependencies(dataService, $q, $rootScope) {
       // inject $rootScope so we can set off Promises
-      $rootScope = _$rootScope_.$new();
+      rootScope = $rootScope.$new();
       // inject the Service we want to test
-      dataService = _dataService_;
+      testService = dataService;
 
       // mock the working API return, now that Promises ($q) is available
       apiServiceMock.getApiDataPromise = jasmine.createSpy('getApiDataPromise').and.callFake(function() {
@@ -62,7 +58,7 @@
 
     // Tests:
     it('should exist', function() {
-      expect(dataService).toBeDefined();
+      expect(testService).toBeDefined();
     });
 
     it('should return a promise with properly formatted bus data from the Rest API', function(done) {
@@ -70,26 +66,25 @@
       var successCallback = function(response) {
         // compare input and output strings
 	      expect(response).toEqual(cleanedData);
-        done();
       };
 
       // failure callback
       var failCallback = function(error) {
         expect(error).toBeUndefined(); // (shouldn't happen...)
-        done();
+        fail("Promise has errored out!"); // (shouldn't happen...)
       };
 
 			// call the Data Services
-      dataService.getBusDataPromise()
+      testService.getBusDataPromise()
 				.then(successCallback)
       	.catch(failCallback)
       	.finally(done);
 
       // regardless of the Promise's status, the API should have been called
-      expect(apiServiceMock.getApiDataPromise).toHaveBeenCalled();
+      expect(apiServiceMock.getApiDataPromise.calls.count()).toEqual(1);
 
       // set off the promise
-			$rootScope.$apply();
+			rootScope.$apply();
 
     });
 

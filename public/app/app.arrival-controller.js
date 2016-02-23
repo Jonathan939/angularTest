@@ -34,7 +34,7 @@
 			function activate () {
 				// intialize the bus data for the first load
 				self.refreshBusData();
-				console.log("Refreshing!");  // TEST!!
+				console.log("Activating!");  // TEST!!
 			}
 
   		// refreshes bus data on the front end (as server responds)
@@ -42,12 +42,15 @@
 				// mark the controller state as loading
 				self.isLoading = true;
 
+				console.log("Refreshing!");  // TEST!!
+
 				// wait for the promised bus data from the server
 				dataStore.getBusDataPromise().then(function(response) {
 					// clear the old bus data
 					self.busData = [];
 					// load the (cleaned) response data into the controller
 					self.busData = response; // (front-end will update when bus data gets updated)
+
 					console.log("Data returned");  // TEST!!
 
 					// clear the loading flag
