@@ -41,7 +41,7 @@
 				stopNumber: 755
 			};
 
-			// Since controllers aren't injectable services, use Angular's Controler service used to instantiate it
+			// Since controllers aren't injectable services, use Angular's Controler to instantiate it
 			testController = $controller ('ArrivalController', {
 				configService: configServiceMock,
 				dataService: dataServiceMock
@@ -54,75 +54,77 @@
 		//////////////
 
 		// Tests:
-		it('should exist', function() {
+		it('should configure itself correctly upon activation', function(done) {
 			expect(testController).toBeDefined();
 
-
-
-
-			// all tests set off 'activate' function! Need to confirm its finish before next function is called!
-			// SET UP 'DATA RECEIVED' console.log AS DONE STATE!! (Using Spy?) (detecting change of variable?)
-
-
-
-
-
-
-
-		});
-
-		it('should list line parameters from Configuration', function() {
+			// initial variables
 			var busName = testController.busName;
 			var busNumber = testController.busNumber;
 			var stopName = testController.stopName;
 			var stopNumber = testController.stopNumber; // desired stop number
 			var destination = testController.destination;
-
 			expect(busName).toBe('Burnside/Stark');
 			expect(busNumber).toBe(20);
 			expect(stopName).toBe('W Burnside & NW 23rd Westbound');
 			expect(stopNumber).toBe(755);
 			expect(destination).toBe('Beaverton Transit Center');
-		});
 
-		it('should initialize to an empty array for future bus data', function() {
 			// upon initialization the controller should be in its loading state
 			expect(testController.isLoading).toBe(true);
 
 			// data array should be empty until the promise returns
-			var data = testController.busData;
-			expect(data).toEqual([]);
+			expect(testController.busData).toEqual([]);
 
+			// the Data Service should have been called
+			expect(dataServiceMock.getBusDataPromise).toHaveBeenCalled();
+
+			// return the Data Service promise
 			$rootScope.$apply();
 
 			// once the promise has been returned, bus data should now be available
-			expect(data).toEqual(testData);
+			expect(testController.busData).toEqual(testData);
 
 			// the controller should not be in its loading state
-			expect(testController.isLoading).toBe(false);
+			if(testController.isLoading === false) {
+				done();
+			}
+			else {
+				fail("Test controller still loading after promise completion.");
+			}
+
 		});
 
-		it('should display a loading status while waiting for a refresh', function() {
 
+		it('should correctly handle loading states during a user-initiated refresh', function() {
+			// upon initialization the controller should be in its loading state
+			expect(testController.isLoading).toBe(true);
 
-			// activate the Refresh request for the Data Service
+			// the Data Service should have been called once
+			expect(dataServiceMock.getBusDataPromise.calls.count()).toEqual(1);
+
+			// set off the Data Service's Refresh promise from its inital load
+			$rootScope.$apply();
+
+			// loading should now be done
+			expect(testController.isLoading).toBe(false);
+
+			// activate a new Refresh request for the Data Service
 			testController.refreshBusData();
 
-			// regardless of the Promise's status, the Data Service should have been called
-			expect(dataServiceMock.getBusDataPromise).toHaveBeenCalled();
+			// the Data Service should have been called again
+			expect(dataServiceMock.getBusDataPromise.calls.count()).toEqual(2);
 
-			// until the promise returns, the controller should be in its loading state
+			// until the promise returns, the controller should again be in its loading state
 			expect(testController.isLoading).toBe(true);
 
 			// set off the Data Service's Refresh promise
 			$rootScope.$apply();
 
-			// as the promise has been returned, bus data should now be available
-			var data = testController.busData;
-			expect(data).toEqual(testData);
-
 			// the controller should not be in its loading state
 			expect(testController.isLoading).toBe(false);
+
+			// the Data Service should not have been called again
+			expect(dataServiceMock.getBusDataPromise.calls.count()).toEqual(2);
 		});
 
 		it('should correctly display the schedule info even when values are missing', function() {

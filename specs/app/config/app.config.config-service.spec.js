@@ -10,7 +10,7 @@
 		// grab the Config module
 		beforeEach(angular.mock.module('Config'));
 
-		// inject the service
+		// inject the Config service
 		beforeEach(angular.mock.inject(function(configService) {
 				testService = configService;
 		}));

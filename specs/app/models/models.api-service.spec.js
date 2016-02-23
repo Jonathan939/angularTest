@@ -8,17 +8,12 @@
 		var testService;
 		// the mocked HTTP backend
 		var $httpBackend;
-		// the expected URL to hit for data
-		var correctUrl = 'https://developer.trimet.org/ws/v2/arrivals?appID=D14BEDCD0ED1CAB4054C1C0B3&arrivals=4&json=true&locIDs=755';
-		// mock return data
-		var mockData = { bus: 1, result: "Success!!!" };
-
-		// mock Config Service
-		var configServiceMock = {
-			tmApiKey: 'D14BEDCD0ED1CAB4054C1C0B3',
-			stopNumber: 755,
-			numArrivals: 4
-		};
+		// URL holder
+		var correctUrl = '';
+		// return data holder
+		var mockData = {};
+		// the Configurartion Service (defined now, completed later)
+		var configServiceMock = {};
 
 
 		// grab the Models module
@@ -35,6 +30,19 @@
 			$httpBackend = _$httpBackend_;
 			// inject the Service we want to test
 			testService = apiService;
+
+			// set the expected URL to hit for data
+			correctUrl = 'https://developer.trimet.org/ws/v2/arrivals?appID=D14BEDCD0ED1CAB4054C1C0B3&arrivals=4&json=true&locIDs=755';
+
+			// mock the config service
+			configServiceMock = {
+				tmApiKey: 'D14BEDCD0ED1CAB4054C1C0B3',
+				stopNumber: 755,
+				numArrivals: 4
+			};
+
+			// mock the return data
+			mockData = { bus: 1, result: "Success!!!" };
 		}));
 
 		///////////////
