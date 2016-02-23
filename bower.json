@@ -1,0 +1,39 @@
+{
+  "name": "angular-test",
+  "description": "Auick test project for AngularJS.",
+  "main": "javascript/app.js",
+  "authors": [
+    "Jonathan Salomon <jsalomon@steelcase.com>"
+  ],
+  "license": "MIT",
+  "private": true,
+  "keywords": [
+    "Test"
+  ],
+  "moduleType": [],
+  "homepage": "",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "angular": "1.x.x",
+    "angular-resource": "1.x.x",
+    "d3": "3.x.x",
+    "font-awesome": "4.x.x"
+  },
+  "devDependencies": {
+    "angular-mocks": "1.x.x"
+  },
+  "overrides": {
+    "font-awesome": {
+      "main": [
+        "./css/font-awesome.css",
+        "./fonts/*"
+      ]
+    }
+  }
+}

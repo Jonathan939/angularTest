@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html data-ng-app="App">
+<head>
+	<title>Angular Test</title>
+
+	<!-- Project CSS Dependencies (handled betweenn the comments below by Bower) -->
+	<!-- bower:css -->
+	<link rel="stylesheet" href="../bower_components/font-awesome/css/font-awesome.css" />
+	<!-- endbower -->
+
+  <!-- TEST! -->
+  <style>
+
+		svg {
+			border: solid 1px black;
+			display: block;
+			margin: 10px;
+		}
+
+
+  </style>
+</head>
+<body>
+	<h1>Angular Test!</h1>
+
+	<h2>Bus Times:</h2>
+
+	<div data-ng-controller="ArrivalController as arrivals">
+		<p><strong>Bus Number:</strong> {{arrivals.busNumber}} - {{arrivals.busName}}</p>
+		<p><strong>Stop:</strong> {{arrivals.stopName}} (#{{arrivals.stopNumber}})</p>
+		<p><strong>Destination:</strong> {{arrivals.destination}}</p>
+		<p><strong>Upcoming Busses:</strong></p>
+		<ul ng-repeat="busses in arrivals.busData">
+			<li>Bus Status: {{buses.status}} -
+				<span ng-hide="busses.estimatedTime == null">Expected Arrival at {{busses.estimatedTime | date : "shortTime"}}</span>
+				<span ng-show="busses.estimatedTime == null">Current Location Unknown</span>
+				<span ng-hide="busses.scheduledTime == null">(Scheduled for {{busses.scheduledTime | date : "shortTime"}})</span>
+			</li>
+		</ul>
+    	<button ng-disabled="arrivals.isLoading" ng-click="arrivals.refreshBusData()">
+				<span ng-hide="arrivals.isLoading">Refresh</span>
+				<span ng-show="arrivals.isLoading"><i class="fa fa-spinner fa-spin"></i> Loading...</span>
+			</button>
+	</div>
+
+  <!-- D3 Sandbox -->
+  <h2>Chart Test!</h2>
+  <svg class="bar-chart"></svg>
+	<svg class="scatter-plot"></svg>
+
+  <!-- Project Javascript Dependencies (handled betweenn the comments below by Bower) -->
+	<!-- bower:js -->
+	<script src="../bower_components/angular/angular.js"></script>
+	<script src="../bower_components/angular-resource/angular-resource.js"></script>
+	<script src="../bower_components/d3/d3.js"></script>
+	<!-- endbower -->
+
+	<script>
+    // d3 mucking about
+
+		// Parameters
+		var svgWidth = 500;
+		var svgHeight = 500;
+		var barPadding = 1;
+
+		///////////////////////
+
+		// random barDataset
+		var barDataset = [];
+		for (var i = 0; i < 25; i++) {
+				var newNumber = Math.random() * 30;  // random number (0-30)
+				barDataset.push(newNumber);
+		}
+
+		// Bar Chart
+		var barSvg = d3.select('svg.bar-chart')
+			.attr('width', svgWidth)
+      .attr('height', svgHeight);
+
+		var bars = barSvg.selectAll('rect')
+	    .data(barDataset)
+	    .enter()
+	    	.append('rect');
+
+		var labels = barSvg.selectAll('text')
+		  .data(barDataset)
+		  .enter()
+		  	.append('text');
+
+		labels
+			.text(function(data) {
+        return Math.round(data);
+   		})
+			.attr('x', function(data, index){
+				return index * (svgWidth / barDataset.length) + (svgWidth / barDataset.length - barPadding) / 2;
+			})
+  		.attr('y', function(data){
+				return svgHeight - (data * 10) + 13;
+			})
+			.attr('font-family', 'sans-serif')
+		  .attr('font-size', '10px')
+		  .attr('fill', 'white')
+			.attr('text-anchor', 'middle');
+
+		bars
+			.attr('x', function(data, index){
+				return index * (svgWidth / barDataset.length);
+			})
+  		.attr('y', function(data){
+				return svgHeight - data * 10;
+			})
+  		.attr('width', (svgWidth / barDataset.length) - barPadding)
+  		.attr('height', function(data) {
+				return data * 10;
+			})
+			.attr('fill', function(data){
+				return 'rgb(10, 10, ' + Math.round(data * 10) + ')';
+			});
+
+		///////////////////////
+
+		// Scatterplot Dataset
+		var scatDataset = [];
+		var dataPair = [];
+		for (var i = 0; i < 10; i++) {
+				var pair1 = Math.round(Math.random() * 400);  // random number (0-400)
+				var pair2 = Math.round(Math.random() * 400); // (0-400)
+				dataPair = [pair1, pair2];
+				scatDataset.push(dataPair);
+		}
+
+		var scatSvg = d3.select('svg.scatter-plot')
+			.attr('width', svgWidth)
+      .attr('height', svgHeight);
+
+		var circles = scatSvg.selectAll('circle')
+			.data(scatDataset)
+			.enter()
+				.append('circle');
+
+		circles
+			.attr('cx', function(data) {
+        return data[0];
+  		})
+  		.attr('cy', function(data) {
+        return data[1];
+  		})
+  		.attr('r', 5);
+
+	</script>
+
+	<!-- Project Javascript Files -->
+	<script src="app/app.module.js"></script>
+	<script src="app/app.arrival-controller.js"></script>
+	<script src="app/config/app.config.module.js"></script>
+	<script src="app/config/app.config.config-service.js"></script>
+	<script src="app/data_services/data-services.module.js"></script>
+	<script src="app/data_services/data-services.data-service.js"></script>
+	<script src="app/models/models.module.js"></script>
+	<script src="app/models/models.api-service.js"></script>
+</body>
+</html>

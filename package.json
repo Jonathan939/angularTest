@@ -1,0 +1,33 @@
+{
+  "name": "angulartest1",
+  "version": "0.0.0",
+  "private": true,
+  "scripts": {
+    "___old___start": "node ./bin/www",
+    "start": "nodemon ./bin/www",
+    "test": "karma start"
+  },
+  "dependencies": {
+    "body-parser": "~1.13.2",
+    "bower": "^1.7.7",
+    "cookie-parser": "~1.3.5",
+    "debug": "~2.2.0",
+    "express": "~4.13.1",
+    "jade": "~1.11.0",
+    "morgan": "~1.6.1",
+    "serve-favicon": "~2.3.0"
+  },
+  "devDependencies": {
+    "grunt": "^0.4.5",
+    "grunt-contrib-uglify": "^0.11.1",
+    "grunt-wiredep": "^2.0.0",
+    "jasmine": "^2.4.1",
+    "karma": "^0.13.21",
+    "karma-chrome-launcher": "^0.2.2",
+    "karma-firefox-launcher": "^0.1.7",
+    "karma-jasmine": "^0.3.7",
+    "karma-phantomjs-launcher": "^1.0.0",
+    "karma-safari-launcher": "^0.1.1",
+    "phantomjs-prebuilt": "^2.1.4"
+  }
+}
