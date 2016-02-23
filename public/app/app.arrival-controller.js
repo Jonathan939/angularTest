@@ -13,7 +13,7 @@
 
     function AppController(config, dataStore) {
   		var self = this;
-
+			
   		// Bindable Members
 			self.busData = []; // holds API data once site returns
   		self.busName = config.busName;
@@ -55,7 +55,11 @@
 
 					// clear the loading flag
 					self.isLoading = false;
-				});
+				}, // end of success on then()
+	      function (error) {
+	        console.error('API Error: ' + error);
+	        return error;
+	      });
 			} // end of refresh bus data
 
     } // end of the arrival controller

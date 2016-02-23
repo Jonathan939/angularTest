@@ -32,29 +32,37 @@ module.exports = function(config) {
     	'public/app/models/models.module.js',
     	'public/app/models/models.api-service.js',
       // load specs
-      'specs/app/config/app.config.config-service.spec.js',
-      'specs/app/models/models.api-service.spec.js',
-      'specs/app/data_services/data-services.data-service.spec.js',
-      "specs/app/app.arrival-controller.spec.js"
+      'tests/app/config/app.config.config-service.spec.js',
+      'tests/app/models/models.api-service.spec.js',
+      'tests/app/data_services/data-services.data-service.spec.js',
+      "tests/app/app.arrival-controller.spec.js"
     ],
 
 
     // list of files to exclude
     exclude: [
-      'spec/jasmine_examples/*'
+      'tests/jasmine_examples/*'
     ],
 
 
     // preprocess matching files before serving them to the browser
     // available preprocessors: https://npmjs.org/browse/keyword/karma-preprocessor
     preprocessors: {
+      'public/app/app.module.js': ['coverage'],
+      'public/app/app.arrival-controller.js': ['coverage'],
+      'public/app/config/app.config.module.js': ['coverage'],
+      'public/app/config/app.config.config-service.js': ['coverage'],
+      'public/app/data_services/data-services.module.js': ['coverage'],
+      'public/app/data_services/data-services.data-service.js': ['coverage'],
+      'public/app/models/models.module.js': ['coverage'],
+      'public/app/models/models.api-service.js': ['coverage']
     },
 
 
     // test results reporter to use
     // possible values: 'dots', 'progress'
     // available reporters: https://npmjs.org/browse/keyword/karma-reporter
-    reporters: ['progress'],
+    reporters: ['progress','coverage'],
 
 
     // web server port
