@@ -54,9 +54,11 @@
 		//////////////
 
 		// Tests:
-		it('should configure itself correctly upon activation', function(done) {
+		it('should exist', function() {
 			expect(testController).toBeDefined();
+		});
 
+		it('should configure itself correctly upon activation', function(done) {
 			// initial variables
 			var busName = testController.busName;
 			var busNumber = testController.busNumber;
