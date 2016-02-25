@@ -10,7 +10,9 @@
   "keywords": [
     "Test"
   ],
-  "moduleType": [],
+  "moduleType": [
+    "globals"
+  ],
   "homepage": "",
   "ignore": [
     "**/.*",

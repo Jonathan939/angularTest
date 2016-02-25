@@ -6,7 +6,7 @@
 		// the module's service to test
 		var testService;
 		// the mocked HTTP backend
-		var $httpBackend;
+		var httpBackend;
 		// URL holder
 		var correctUrl = '';
 		// return data holder
@@ -26,9 +26,9 @@
     }));
 
 		// inject the API service, its http dependency, and the dependency we set up
-		beforeEach(angular.mock.inject(function GetDependencies(_$httpBackend_, apiService) {
+		beforeEach(angular.mock.inject(function GetDependencies($httpBackend, apiService) {
 			// inject the $http tester
-			$httpBackend = _$httpBackend_;
+			httpBackend = $httpBackend;
 			// inject the Service we want to test
 			testService = apiService;
 
@@ -69,7 +69,7 @@
 	    };
 
 			// set up a mock GET response to intercept the app's normal response
-			$httpBackend.expectGET(correctUrl).respond(200,mockData);
+			httpBackend.expectGET(correctUrl).respond(200,mockData);
 
 			// call the API
 			testService.getApiDataPromise()
@@ -78,7 +78,7 @@
       	.finally(done);
 
 			// execute all HTTP requests (akin to $rootScope.apply() )
-			$httpBackend.flush();
+			httpBackend.flush();
 		});
 
 	}); // end of describe
