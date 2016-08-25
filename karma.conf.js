@@ -18,24 +18,20 @@ module.exports = function(config) {
       // load angular first
       'bower_components/angular/angular.js',
       // then load angular modules
-      'bower_components/angular-resource/angular-resource.js',
       'bower_components/angular-mocks/angular-mocks.js',
+      'bower_components/angular-resource/angular-resource.js',
       // then load other libraries
       'bower_components/d3/d3.js',
-      // load app scripts
+      // load app modules
+      // NOTE: Modules must be explicitally called first!
       'public/app/app.module.js',
-      'public/app/app.arrival-controller.js',
       'public/app/config/app.config.module.js',
-      'public/app/config/app.config.config-service.js',
     	'public/app/data_services/data-services.module.js',
-    	'public/app/data_services/data-services.data-service.js',
     	'public/app/models/models.module.js',
-    	'public/app/models/models.api-service.js',
+      // load all other app scripts
+      'public/app/**/*.js',
       // load specs
-      'tests/app/config/app.config.config-service.spec.js',
-      'tests/app/models/models.api-service.spec.js',
-      'tests/app/data_services/data-services.data-service.spec.js',
-      "tests/app/app.arrival-controller.spec.js"
+      'tests/app/**/*.spec.js',
     ],
 
 
@@ -48,14 +44,7 @@ module.exports = function(config) {
     // preprocess matching files before serving them to the browser
     // available preprocessors: https://npmjs.org/browse/keyword/karma-preprocessor
     preprocessors: {
-      'public/app/app.module.js': ['coverage'],
-      'public/app/app.arrival-controller.js': ['coverage'],
-      'public/app/config/app.config.module.js': ['coverage'],
-      'public/app/config/app.config.config-service.js': ['coverage'],
-      'public/app/data_services/data-services.module.js': ['coverage'],
-      'public/app/data_services/data-services.data-service.js': ['coverage'],
-      'public/app/models/models.module.js': ['coverage'],
-      'public/app/models/models.api-service.js': ['coverage']
+      'public/app/**/*.js': ['coverage']
     },
 
 
